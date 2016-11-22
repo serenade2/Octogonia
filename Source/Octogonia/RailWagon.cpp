@@ -16,12 +16,12 @@ ARailWagon::ARailWagon()
 	RootComponent = Root;
 
 	AnchorPoint = CreateDefaultSubobject<USceneComponent>("AnchorPoint");
-	AnchorPoint->AttachToComponent(RootComponent, FAttachmentTransformRules(EAttachmentRule::KeepRelative, false));
+	AnchorPoint->SetupAttachment(RootComponent);
 
 	DroneAverageSpeedHeuristic = 0.9f;
 
 	Mesh = CreateDefaultSubobject<UStaticMeshComponent>("Mesh");
-	Mesh->AttachToComponent(RootComponent, FAttachmentTransformRules(EAttachmentRule::KeepRelative, false));
+	Mesh->SetupAttachment(RootComponent);
 }
 
 // Called when the game starts or when spawned

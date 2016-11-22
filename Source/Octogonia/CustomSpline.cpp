@@ -13,10 +13,10 @@ ACustomSpline::ACustomSpline()
 	RootComponent = Root;
 
 	Spline = CreateDefaultSubobject<USplineComponent>("Spline");
-	Spline->AttachToComponent(RootComponent, FAttachmentTransformRules(EAttachmentRule::KeepWorld, false));
+	Spline->SetupAttachment(RootComponent);
 
 	MeshesContainer = CreateDefaultSubobject<USceneComponent>("RailMeshesContainer");
-	MeshesContainer->AttachToComponent(RootComponent, FAttachmentTransformRules(EAttachmentRule::KeepWorld, false));
+	MeshesContainer->SetupAttachment(RootComponent);
 
 }
 
@@ -109,7 +109,7 @@ void ACustomSpline::AddMeshPart(const FVector &startLocation, const FVector &sta
 	railMesh->SetStartAndEnd(startLocation + offset, startTangent, endLocation + offset, endTangent);
 
 	railMesh->SetMobility(EComponentMobility::Movable);
-	railMesh->AttachToComponent(MeshesContainer, FAttachmentTransformRules(EAttachmentRule::KeepWorld, false));
+	railMesh->SetupAttachment(MeshesContainer);
 	railMesh->RegisterComponent();
 }
 

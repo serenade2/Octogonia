@@ -16,18 +16,18 @@ ASeekerDrone::ASeekerDrone()
 	RootComponent = CollisionCoponent;
 
 	SkeletalMesh = CreateDefaultSubobject<USkeletalMeshComponent>("Body", false);
-	SkeletalMesh->AttachToComponent(RootComponent, FAttachmentTransformRules(EAttachmentRule::KeepRelative, false));
+	SkeletalMesh->SetupAttachment(RootComponent);
 
 	EatingSphere = CreateDefaultSubobject<USphereComponent>("Eating Sphere ", false);
 	EatingSphere->SetSphereRadius(200, true);
-	EatingSphere->AttachToComponent(RootComponent, FAttachmentTransformRules(EAttachmentRule::KeepRelative, false));
+	EatingSphere->SetupAttachment(RootComponent);
 
 	VisionSphere = CreateDefaultSubobject<USphereComponent>("VisionSphere", false);
-	VisionSphere->AttachToComponent(RootComponent, FAttachmentTransformRules(EAttachmentRule::SnapToTarget, false));
+	VisionSphere->SetupAttachment(RootComponent);
 	VisionSphere->SetSphereRadius(400, true);
 
 	eyeSocket = CreateDefaultSubobject<USceneComponent>("Eye Socket", false);
-	eyeSocket->AttachToComponent(RootComponent, FAttachmentTransformRules(EAttachmentRule::KeepRelative, false));
+	eyeSocket->SetupAttachment(RootComponent);
 }
 void ASeekerDrone::EatNearbyDrone(float DeltaSeconds)
 {

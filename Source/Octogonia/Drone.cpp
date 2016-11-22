@@ -25,11 +25,11 @@ ADrone::ADrone()
 	RootComponent = ColisionComponent;
 
 	Mesh = CreateDefaultSubobject<UDestructibleComponent>("Mesh", false);
-	Mesh->AttachToComponent(RootComponent, FAttachmentTransformRules(EAttachmentRule::SnapToTarget, false));
+	Mesh->SetupAttachment(RootComponent);
 	Mesh->OnComponentFracture.AddDynamic(this, &ADrone::DestroyDrone);
 
 	VisionSphere = CreateDefaultSubobject<USphereComponent>("VisionSphere", false);
-	VisionSphere->AttachToComponent(RootComponent, FAttachmentTransformRules(EAttachmentRule::SnapToTarget, false));
+	VisionSphere->SetupAttachment(RootComponent);
 	VisionSphere->SetSphereRadius(400, true);
 }
 

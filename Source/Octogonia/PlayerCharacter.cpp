@@ -13,31 +13,31 @@ APlayerCharacter::APlayerCharacter()
 	PrimaryActorTick.bCanEverTick = true;
 
 	Camera = CreateDefaultSubobject<UCameraComponent>("Camera");
-	Camera->AttachToComponent(RootComponent, FAttachmentTransformRules(EAttachmentRule::KeepRelative, false));
+	Camera->SetupAttachment(RootComponent);
 
 	RightHandContainer = CreateDefaultSubobject<USceneComponent>("RightHandContainer");
-	//RightHandContainer->AttachToComponent(Camera, FAttachmentTransformRules(EAttachmentRule::KeepRelative, false));
-	RightHandContainer->AttachToComponent(RootComponent, FAttachmentTransformRules(EAttachmentRule::KeepRelative, false));
+	//RightHandContainer->SetupAttachment(Camera);
+	RightHandContainer->SetupAttachment(RootComponent);
 
 	LeftHandContainer = CreateDefaultSubobject<USceneComponent>("LeftHandContainer");
-	//LeftHandContainer->AttachToComponent(Camera, FAttachmentTransformRules(EAttachmentRule::KeepRelative, false));
-	LeftHandContainer->AttachToComponent(RootComponent, FAttachmentTransformRules(EAttachmentRule::KeepRelative, false));
+	//LeftHandContainer->SetupAttachment(Camera);
+	LeftHandContainer->SetupAttachment(RootComponent);
 
 	RightHandMesh2 = CreateDefaultSubobject<USkeletalMeshComponent>("RightHandMesh2");
-	RightHandMesh2->AttachToComponent(RightHandContainer, FAttachmentTransformRules(EAttachmentRule::KeepRelative, false));
+	RightHandMesh2->SetupAttachment(RightHandContainer);
 
 	LeftHandMesh = CreateDefaultSubobject<USkeletalMeshComponent>("LeftHandMesh");
-	LeftHandMesh->AttachToComponent(LeftHandContainer, FAttachmentTransformRules(EAttachmentRule::KeepRelative, false));
+	LeftHandMesh->SetupAttachment(LeftHandContainer);
 
 	RightHandHookPoint = CreateDefaultSubobject<USceneComponent>("RightHandHookPoint");
-	RightHandHookPoint->AttachToComponent(RightHandMesh2, FAttachmentTransformRules(EAttachmentRule::KeepRelative, false));
+	RightHandHookPoint->SetupAttachment(RightHandMesh2);
 
 	LeftHandHookPoint = CreateDefaultSubobject<USceneComponent>("LeftHandHookPoint");
-	LeftHandHookPoint->AttachToComponent(LeftHandMesh, FAttachmentTransformRules(EAttachmentRule::KeepRelative, false));
+	LeftHandHookPoint->SetupAttachment(LeftHandMesh);
 	/**/
 	EnergyLevelIndicator = CreateDefaultSubobject<UTextRenderComponent>("EnergyLevel");
-	EnergyLevelIndicator->AttachToComponent(RightHandMesh2, FAttachmentTransformRules(EAttachmentRule::KeepRelative, false));
-	EnergyLevelIndicator->SetText(FString::SanitizeFloat(this->EnergyLevel));
+	EnergyLevelIndicator->SetupAttachment(RightHandMesh2);
+	EnergyLevelIndicator->SetText(FText::AsNumber(this->EnergyLevel));
 	EnergyLevelIndicator->SetTextRenderColor(colorDamage);
 	EnergyLevelIndicator->SetWorldSize(6.0f);
 	EnergyLevel = MaxEnergyLevel;
@@ -254,7 +254,7 @@ void APlayerCharacter::ModifyEnergy(float value)
 	if (EnergyLevel > MaxEnergyLevel) {
 		EnergyLevel = MaxEnergyLevel;
 	}
-	EnergyLevelIndicator->SetText(FString::SanitizeFloat(this->EnergyLevel));
+	EnergyLevelIndicator->SetText(FText::AsNumber(this->EnergyLevel));
 	ChangeGunMaterial();
 }
 
