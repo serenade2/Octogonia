@@ -133,6 +133,8 @@ void APlayerCharacter::TriggerRightHandPressed()
 	if (EnergyLevel > 0) {
 		isShooting = true;
 		IsShootingChange();
+		//device.TriggerHapticPulse(10, Valve.VR.EVRButtonId.k_EButton_SteamVR_TouchPad);
+		//USteamVRFunctionLibrary::
 	}
 }
 
@@ -190,57 +192,60 @@ void APlayerCharacter::ShootLaser(USceneComponent *handSocket, float DeltaTime)
 
 	if (EnergyLevel > 0)
 	{
-		if (!isInHealingMode) 
-		{
-			DrawDebugLine(GetWorld(), startLocation, endLocation, colorDamage, true, DeltaTime*1.1, 0, 2);
-			//ShootParticleEffect(startLocation,endLocation,colorDamage);
-		}
-		else 
-		{
-			DrawDebugLine(GetWorld(), startLocation, endLocation, colorHealing, true, DeltaTime*1.1, 0, 2);
-			//ShootParticleEffect(startLocation,endLocation,colorHealing);
-		}
 		
+		isInHealingMode = false;
 		FHitResult hitResult;
 		GetWorld()->LineTraceSingleByChannel(hitResult,
 			startLocation,
 			endLocation,
 			ECC_Visibility);
+			
+			//0DrawDebugLine(GetWorld(), startLocation, endLocation, colorDamage, true, DeltaTime*1.1, 0, 2);
+			//ShootParticleEffect(startLocation,endLocation,colorDamage);
 
-
+		
 		if (hitResult.GetActor() && hitResult.GetActor()->IsA(ADrone::StaticClass()))
 		{
 			ADrone* Drone = Cast<ADrone>(hitResult.GetActor());
-			if (!isInHealingMode) 
+
+			if (!Drone->IsFriendly)
 			{
-				if (!Drone->IsFriendly) 
-				{
-					Drone->DamageDrone(LaserDPF*DeltaTime, hitResult.ImpactPoint, (endLocation - startLocation).GetSafeNormal(), 1000);
-				}
+				Drone->DamageDrone(LaserDPF*DeltaTime, hitResult.ImpactPoint, (endLocation - startLocation).GetSafeNormal(), 1000);
+				
 			}
-			else 
+			else
 			{
-				if (Drone->IsFriendly) 
-				{
-					Drone->RestoreEnergy(LaserHPF*DeltaTime);
-				}
+
+				isInHealingMode = true;
+				Drone->RestoreEnergy(LaserHPF*DeltaTime);
 			}
 		}
 
 		if (hitResult.GetActor() && hitResult.GetActor()->IsA(ASeekerDrone::StaticClass()))
 		{
 			ASeekerDrone* Seeker = Cast<ASeekerDrone>(hitResult.GetActor());
-			if (!isInHealingMode) 
-			{
-				Seeker->ApplyDamage(LaserDPF*DeltaTime);
-			}
+			Seeker->ApplyDamage(LaserDPF*DeltaTime);
+			
+	
 		}
 		if (hitResult.GetComponent() && hitResult.GetComponent()->IsA(UDestructibleComponent::StaticClass()))
 		{
 			UDestructibleComponent* Destructible = Cast<UDestructibleComponent>(hitResult.GetComponent());
 			Destructible->ApplyDamage(LaserDPF*DeltaTime, hitResult.ImpactPoint, (endLocation - startLocation).GetSafeNormal(), 1000);
+			
 		}
-
+		if (!isInHealingMode)
+		{
+			ChangeGunMaterial();
+			ChangeEnergyTextColor();
+			DrawDebugLine(GetWorld(), startLocation, endLocation, colorDamage, true, DeltaTime*1.1, 0, 2);
+		}
+		else
+		{
+			ChangeGunMaterial();
+			ChangeEnergyTextColor();
+			DrawDebugLine(GetWorld(), startLocation, endLocation, colorHealing, true, DeltaTime*1.1, 0, 2);
+		}
 		ModifyEnergy(-LaserEnergyDrain);
 	}
 	else {
