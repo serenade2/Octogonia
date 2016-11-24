@@ -281,7 +281,8 @@ void APlayerCharacter::ChangeRightHandOrientation(FRotator newRotation)
 
 void APlayerCharacter::ChangeRightHandPosition(FVector newPosition)
 {
-	RightHandContainer->SetRelativeLocation(newPosition);
+	if (RightHandContainer != nullptr)
+		RightHandContainer->SetRelativeLocation(newPosition);
 }
 
 void APlayerCharacter::ChangeEnergyTextColor() 

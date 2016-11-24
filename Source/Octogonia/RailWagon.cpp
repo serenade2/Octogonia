@@ -108,6 +108,10 @@ void ARailWagon::UpdateWagonLocation()
 	// If a RailSpline has been linked, we can safely position our wagon on it
 	if (RailSpline)
 	{
+		auto totalLength = RailSpline->GetSplineComponent()->GetSplineLength();
+		if (splineDistance > totalLength)
+			splineDistance = totalLength;
+
 		FVector location = RailSpline->GetSplineComponent()->GetLocationAtDistanceAlongSpline(splineDistance, ESplineCoordinateSpace::World);
 		FVector direction = RailSpline->GetSplineComponent()->GetDirectionAtDistanceAlongSpline(splineDistance, ESplineCoordinateSpace::World);
 
@@ -116,7 +120,7 @@ void ARailWagon::UpdateWagonLocation()
 
 		//Spawning Orbs
 		if((long)splineDistance % 100 == 0) {
-			FVector orbLocation = RailSpline->GetSplineComponent()->GetLocationAtDistanceAlongSpline(splineDistance+5000, ESplineCoordinateSpace::World);
+			FVector orbLocation = RailSpline->GetSplineComponent()->GetLocationAtDistanceAlongSpline(splineDistance+8000, ESplineCoordinateSpace::World);
 			RailSpline->SpawnOrbs(orbLocation);
 		}
 	}

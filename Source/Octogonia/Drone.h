@@ -57,7 +57,7 @@ public:
 	float FoodValue = 10.0f;
 	// the remaining energy
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta = (AllowPrivateAccess))
-	int CurrentEnergy = 100;
+	int CurrentEnergy = 0;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta = (AllowPrivateAccess))
 	float MaxSpeed = 200000;
 	// the actual speed

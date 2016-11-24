@@ -47,7 +47,7 @@ void ADrone::BeginPlay()
 	Velocity *= MovementSpeed;
 	startInterval = 0.f;
 	SetSpeed(MaxSpeed);
-	SetEnergy(MaxEnergy);
+	SetEnergy(CurrentEnergy);
 }
 
 void ADrone::DestroyDrone(const FVector& hit1, const FVector& hit2)
